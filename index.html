@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+</style>
+</head>
+<body>
+<div id="expressions"></div>
+
+<script>
+function generateExpression() {
+    const target = 200;
+    const expressionsContainer = document.getElementById('expressions');
+
+    function evaluate(expression) {
+        try {
+            return Function('"use strict";return (' + expression + ')')();
+        } catch (error) {
+            return Infinity;
+        }
+    }
+
+    function displayExpression(expression) {
+        expressionsContainer.innerHTML += expression + ' = ' + target + '<br>';
+    }
+
+    function backtrack(index, currentExpression, currentResult) {
+        if (index === numbers.length) {
+            if (currentResult === target) {
+                displayExpression(currentExpression);
+            }
+            return;
+        }
+
+        operators.forEach(operator => {
+            const nextExpression = currentExpression + operator + numbers[index];
+            const nextResult = evaluate(nextExpression);
+            backtrack(index + 1, nextExpression, currentResult + nextResult);
+        });
+    }
+
+    const operators = ['+', '-', ''];
+    const numbers = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
+    backtrack(1, numbers[0].toString(), numbers[0]);
+}
+
+generateExpression();
+</script>
+</body>
+</html>
